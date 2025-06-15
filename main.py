@@ -15,7 +15,7 @@ st.markdown("""
 **AI Chatbot to ask and answering**
 **User Guide:**
 1. **Upload PDF** Upload your pdf
-2. **Đặt câu hỏi** Enter your question and get answer in real-time
+2. **Ask questions** Enter your question and get answer in real-time
 ---
 """)
 
@@ -40,5 +40,5 @@ if st.session_state.rag_chain:
         with st.spinner("Answering..."):
             output = st.session_state.rag_chain.invoke(question)
             answer = output.split("Answer:")[1].strip() if "Answer:" in output else output.strip()
-            st.write("**Trả lời:**")
+            st.write("**Answer:**")
             st.write(answer)
