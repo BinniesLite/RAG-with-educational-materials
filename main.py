@@ -12,33 +12,32 @@ st.set_page_config(page_title="PDF RAG Assistant", layout="wide")
 st.title("PDF RAG Assistant")
 
 st.markdown("""
-**Ứng dụng AI giúp bạn hỏi đáp trực tiếp với nội dung tài liệu PDF bằng tiếng Việt**
-**Cách sử dụng đơn giản:**
-1. **Upload PDF** Chọn file PDF từ máy tính và nhấn "Xử lý PDF"
-2. **Đặt câu hỏi** Nhập câu hỏi về nội dung tài liệu và nhận câu trả lời ngay lập tức
+**AI Chatbot to ask and answering**
+**User Guide:**
+1. **Upload PDF** Upload your pdf
+2. **Đặt câu hỏi** Enter your question and get answer in real-time
 ---
 """)
 
 # Load models (from PDF page 15)
 if not st.session_state.models_loaded:
-    st.info("Đang tải models...")
+    st.info("Loading the model...")
     st.session_state.embeddings = load_embeddings()
     st.session_state.llm = load_llm()
     st.session_state.models_loaded = True
-    st.success("Models đã sẵn sàng!")
+    st.success("Model is ready!")
     st.rerun()
 
-# Upload and process PDF (from PDF page 16)
 uploaded_file = st.file_uploader("Upload file PDF", type="pdf")
-if uploaded_file and st.button("Xử lý PDF"):
-    with st.spinner("Đang xử lý..."):
+if uploaded_file and st.button("Process pdf"):
+    with st.spinner("Processing..."):
         st.session_state.rag_chain, num_chunks = process_pdf(uploaded_file)
-        st.success(f"Hoàn thành! {num_chunks} chunks")
+        st.success(f"Success! {num_chunks} chunks")
 
 if st.session_state.rag_chain:
-    question = st.text_input("Đặt câu hỏi:")
+    question = st.text_input("Enter your prompt:")
     if question:
-        with st.spinner("Đang trả lời..."):
+        with st.spinner("Answering..."):
             output = st.session_state.rag_chain.invoke(question)
             answer = output.split("Answer:")[1].strip() if "Answer:" in output else output.strip()
             st.write("**Trả lời:**")

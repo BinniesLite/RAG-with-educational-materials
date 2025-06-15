@@ -6,6 +6,7 @@ from langchain_huggingface.llms import HuggingFacePipeline
 @st.cache_resource
 def load_llm():
     MODEL_NAME = "lmsys/vicuna-7b-v1.5"
+    # MODEL_NAME = 'NlpHUST/gpt2-vietnamese'
     model = AutoModelForCausalLM.from_pretrained(
         MODEL_NAME,
         torch_dtype=torch.bfloat16,
@@ -15,6 +16,7 @@ def load_llm():
     
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
+    
     model_pipeline = pipeline(
         "text-generation",
         model=model,
